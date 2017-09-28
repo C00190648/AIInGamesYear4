@@ -1,0 +1,8 @@
+﻿  Player.cpp
+c:\users\gameuser\documents\ai in games\lab 1 - machine setup\player.cpp(19): warning C4305: '=': truncation from 'double' to 'float'
+c:\users\gameuser\documents\ai in games\lab 1 - machine setup\player.cpp(61): warning C4305: '+=': truncation from 'double' to 'float'
+c:\users\gameuser\documents\ai in games\lab 1 - machine setup\player.cpp(72): warning C4305: '-=': truncation from 'double' to 'float'
+c:\users\gameuser\documents\ai in games\lab 1 - machine setup\player.cpp(89): warning C4305: '-=': truncation from 'double' to 'float'
+c:\users\gameuser\documents\ai in games\lab 1 - machine setup\player.cpp(98): warning C4305: '+=': truncation from 'double' to 'float'
+  Lab 1 - machine setup.vcxproj -> C:\Users\gameuser\Documents\AI in Games\Lab 1 - machine setup\Debug\Lab 1 - machine setup.exe
+  Lab 1 - machine setup.vcxproj -> C:\Users\gameuser\Documents\AI in Games\Lab 1 - machine setup\Debug\Lab 1 - machine setup.pdb (Partial PDB)
