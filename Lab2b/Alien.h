@@ -3,16 +3,18 @@
 #include <SFML\Graphics.hpp>
 #include <SFML\Window.hpp>
 #include <stdlib.h>
+#include "Player.h"
 
-class Character
+class alien
 {
 public:
-	Character(int type);
-	~Character();
+	alien(int type);
+	~alien();
 
 	void move();
+	void seek(Player target);
 	void changeVelocity();
-
+	void getOrientation(float orientation, sf::Vector2f velocity);
 	void draw(sf::RenderWindow& window);
 
 private:
@@ -27,5 +29,7 @@ private:
 	sf::Vector2f position;
 	sf::Texture CharTexture;
 	sf::Sprite Char;
+	float orientation;
+
 };
 

@@ -11,7 +11,7 @@ int main()
 {
 
 	sf::Event event;
-	Character AI(1);
+	alien AI(1);
 	Player player;
 
 	while (window.isOpen())

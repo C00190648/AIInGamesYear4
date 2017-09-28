@@ -1,6 +1,6 @@
 #include "Alien.h"
 
-Character::Character(int type)
+alien::alien(int type)
 {
 	direction = rand() % 5 + 1;
 
@@ -17,11 +17,11 @@ Character::Character(int type)
 	}
 }
 
-Character::~Character()
+alien::~alien()
 {
 }
 
-void Character::move()
+void alien::move()
 {
 	if (direction == RIGHT)
 	{
@@ -64,7 +64,7 @@ void Character::move()
 	}
 }
 
-void Character::changeVelocity()
+void alien::changeVelocity()
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !pressed)
 	{
@@ -95,8 +95,35 @@ void Character::changeVelocity()
 	}
 }
 
-void Character::draw(sf::RenderWindow& window)
+void alien::draw(sf::RenderWindow& window)
 {
 	Char.setPosition(position.x, position.y);
 	window.draw(Char);
+}
+
+void alien::seek(Player target)
+{
+
+}
+
+
+
+void alien::getOrientation(float orientation, sf::Vector2f velocity)
+{
+	float temp = getMag(velocity);
+	if (temp > 0)
+	{
+
+	}
+	else
+	{
+		return atan2(-position.y, position.x);
+
+	}
+}
+
+float getMag(sf::Vector2f velocity)
+{
+	float temp = sqrt((velocity.x * velocity.x) + (velocity.y * velocity.y));
+	return temp;
 }

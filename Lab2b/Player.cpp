@@ -16,7 +16,7 @@ Player::Player()
 	position.x = 600;
 	position.y = 600;
 	rotation = player.getRotation();
-	speed = 0.03;
+	speed = 0.3;
 
 }
 

@@ -1,14 +1,8 @@
-﻿  Source.cpp
-  Player.cpp
+﻿  Player.cpp
 c:\ai\aiingamesyear4\lab2b\player.cpp(19): warning C4305: '=': truncation from 'double' to 'float'
 c:\ai\aiingamesyear4\lab2b\player.cpp(61): warning C4305: '+=': truncation from 'double' to 'float'
 c:\ai\aiingamesyear4\lab2b\player.cpp(72): warning C4305: '-=': truncation from 'double' to 'float'
 c:\ai\aiingamesyear4\lab2b\player.cpp(89): warning C4305: '-=': truncation from 'double' to 'float'
 c:\ai\aiingamesyear4\lab2b\player.cpp(98): warning C4305: '+=': truncation from 'double' to 'float'
-  Alien.cpp
-c:\ai\aiingamesyear4\lab2b\alien.cpp(16): warning C4305: '=': truncation from 'double' to 'float'
-c:\ai\aiingamesyear4\lab2b\alien.cpp(71): warning C4305: '+=': truncation from 'double' to 'float'
-c:\ai\aiingamesyear4\lab2b\alien.cpp(82): warning C4305: '-=': truncation from 'double' to 'float'
-  Generating Code...
   Lab2b.vcxproj -> C:\AI\AIInGamesYear4\Lab2b\Debug\Lab2b.exe
   Lab2b.vcxproj -> C:\AI\AIInGamesYear4\Lab2b\Debug\Lab2b.pdb (Partial PDB)
