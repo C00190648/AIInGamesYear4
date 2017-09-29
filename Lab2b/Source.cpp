@@ -29,8 +29,8 @@ int main()
 
 		player.move();
 
+		AI.seek(player);
 		AI.move();
-
 		player.changeVelocity();
 		window.clear();
 		AI.draw(window);

@@ -14,6 +14,8 @@ alien::alien(int type)
 		position.x = 500;
 		position.y = 500;
 		speed = 0.03;
+
+		rotation = Char.getRotation();
 	}
 }
 
@@ -23,77 +25,33 @@ alien::~alien()
 
 void alien::move()
 {
-	if (direction == RIGHT)
+
+	position = position + velocity;
+
+
+	if (position.x > 1000)
 	{
-		position.x += speed;
-
-		if (position.x > 1000)
-		{
-			position.x = 5;
-		}
-	}
-	else if (direction == LEFT)
-	{
-		position.x -= speed;
-
-
-		if (position.x < -50)
-		{
-			position.x = 990;
-		}
+		position.x = 5;
 	}
 
-	else if (direction == DOWN)
+	if (position.x < -50)
 	{
-		position.y += speed;
-
-		if (position.y > 1000)
-		{
-			position.y = 5;
-		}
+		position.x = 990;
 	}
 
-	else if (direction == UP)
+	if (position.y > 1000)
 	{
-		position.y -= speed;
-
-		if (position.y < -50)
-		{
-			position.y = 990;
-		}
+		position.y = 5;
 	}
+
+	if (position.y < -50)
+	{
+		position.y = 990;
+	}
+
 }
 
-void alien::changeVelocity()
-{
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !pressed)
-	{
-		speed += 0.01;
-		pressed = true;
 
-		if (speed > 15)
-		{
-			speed = 15;
-		}
-	}
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && !pressed)
-	{
-		speed -= 0.01;
-		pressed = true;
-
-		if (speed < 0)
-		{
-			speed = 0;
-		}
-
-	}
-
-	if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-	{
-		pressed = false;
-	}
-}
 
 void alien::draw(sf::RenderWindow& window)
 {
@@ -103,26 +61,31 @@ void alien::draw(sf::RenderWindow& window)
 
 void alien::seek(Player target)
 {
-
+	velocity = target.position - position;
+	velocity = velocity / getMag(velocity);
+	velocity = velocity * maxSpeed;
+	orientation = getOrientation(orientation, velocity);
+	orientation = orientation * 180 / 3.14;
+	Char.setRotation(orientation);
 }
 
 
 
-void alien::getOrientation(float orientation, sf::Vector2f velocity)
+float alien::getOrientation(float orientation, sf::Vector2f velocity)
 {
 	float temp = getMag(velocity);
 	if (temp > 0)
 	{
-
+		return atan2(-position.y ,position.x);
 	}
 	else
 	{
-		return atan2(-position.y, position.x);
+		
 
 	}
 }
 
-float getMag(sf::Vector2f velocity)
+float alien::getMag(sf::Vector2f velocity)
 {
 	float temp = sqrt((velocity.x * velocity.x) + (velocity.y * velocity.y));
 	return temp;

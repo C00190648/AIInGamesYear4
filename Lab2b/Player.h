@@ -12,7 +12,7 @@ public:
 
 	void move();
 	void changeVelocity();
-
+	sf::Vector2f position;
 	void draw(sf::RenderWindow& window);
 
 private:
@@ -27,7 +27,7 @@ private:
 	int LEFT = 2;
 	int UP = 3;
 	int DOWN = 4;
-	sf::Vector2f position;
+
 	sf::Texture playerTexture;
 	sf::Sprite player;
 };
