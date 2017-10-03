@@ -1,7 +1,4 @@
 ﻿  Alien.cpp
-c:\ai2\aiingamesyear4\lab2b\alien.h(27): warning C4305: 'initializing': truncation from 'double' to 'float'
-c:\ai2\aiingamesyear4\lab2b\alien.cpp(16): warning C4305: '=': truncation from 'double' to 'float'
-c:\ai2\aiingamesyear4\lab2b\alien.cpp(68): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\ai2\aiingamesyear4\lab2b\alien.cpp(86): warning C4715: 'alien::getOrientation': not all control paths return a value
+c:\ai2\aiingamesyear4\lab2b\alien.cpp(70): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   Lab2b.vcxproj -> C:\AI2\AIInGamesYear4\Lab2b\Debug\Lab2b.exe
   Lab2b.vcxproj -> C:\AI2\AIInGamesYear4\Lab2b\Debug\Lab2b.pdb (Partial PDB)

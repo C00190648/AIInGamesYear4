@@ -16,7 +16,7 @@ Player::Player()
 	position.x = 600;
 	position.y = 600;
 	rotation = player.getRotation();
-	speed = 0.03;
+	speed = 3;
 
 }
 
@@ -58,7 +58,7 @@ void Player::changeVelocity()
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !pressed)
 	{
-		speed += 0.01;
+		speed += 1;
 		pressed = true;
 
 		if (speed > 15)
@@ -69,7 +69,7 @@ void Player::changeVelocity()
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && !pressed)
 	{
-		speed -= 0.01;
+		speed -= 1;
 		pressed = true;
 
 		if (speed < 0)
@@ -79,15 +79,16 @@ void Player::changeVelocity()
 
 	}
 
-	if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+	if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Down) &&
+		!sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
 		pressed = false;
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
-		rotation -= 0.000175;
-		player.setRotation(player.getRotation() - 0.01f);
+		rotation -= 0.0872;
+		player.setRotation(player.getRotation() - 5);
 
 	}
 
@@ -95,8 +96,8 @@ void Player::changeVelocity()
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
 
-		rotation += 0.000175;
-		player.setRotation(player.getRotation() + 0.01f);
+		rotation += 0.0872;
+		player.setRotation(player.getRotation() + 5);
 
 	}
 

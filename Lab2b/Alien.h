@@ -14,7 +14,8 @@ public:
 	void move();
 	void seek(Player target);
 	//void changeVelocity();
-	float getOrientation(float orientation, sf::Vector2f velocity);
+	float getOrientation(float orientation, sf::Vector2f velocity, Player target);
+	void wander(Player target);
 	void draw(sf::RenderWindow& window);
 	float getMag(sf::Vector2f velocity);
 
@@ -24,7 +25,7 @@ private:
 	bool pressed;
 	int direction;
 	float rotation;
-	float maxSpeed = 0.009;
+	float maxSpeed = 2;
 	int RIGHT = 1;
 	int LEFT = 2;
 	int UP = 3;

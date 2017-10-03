@@ -13,7 +13,7 @@ alien::alien(int type)
 
 		position.x = 500;
 		position.y = 500;
-		speed = 0.03;
+		speed = 2;
 
 		rotation = Char.getRotation();
 	}
@@ -61,17 +61,19 @@ void alien::draw(sf::RenderWindow& window)
 
 void alien::seek(Player target)
 {
+
 	velocity = target.position - position;
-	velocity = velocity / getMag(velocity);
+	float temp = getMag(velocity);
+	velocity = velocity / temp;
 	velocity = velocity * maxSpeed;
-	orientation = getOrientation(orientation, velocity);
-	orientation = orientation * 180 / 3.14;
+	orientation = getOrientation(orientation, velocity, target);
+	orientation = (orientation * 180) / 3.14;
 	Char.setRotation(orientation);
 }
 
 
 
-float alien::getOrientation(float orientation, sf::Vector2f velocity)
+float alien::getOrientation(float orientation, sf::Vector2f velocity, Player target)
 {
 	float temp = getMag(velocity);
 	if (temp > 0)
@@ -81,7 +83,7 @@ float alien::getOrientation(float orientation, sf::Vector2f velocity)
 	else
 	{
 		
-
+		return orientation;
 	}
 }
 
@@ -89,4 +91,16 @@ float alien::getMag(sf::Vector2f velocity)
 {
 	float temp = sqrt((velocity.x * velocity.x) + (velocity.y * velocity.y));
 	return temp;
+}
+
+
+void alien::wander(Player target)
+{
+	float temp;
+	velocity = target.position - position;
+	temp = getMag(velocity);
+	velocity = velocity / temp;
+	orientation = getOrientation(orientation, velocity, target);
+	//orientation = orientation + MaxRotation * random(-1, +1);
+	//Velocity = (-sin(orientation), cos(orientation))*maxSpeed;
 }
