@@ -12,7 +12,7 @@ alien::alien(int type)
 		CharTexture.loadFromFile("alien.png");
 		Char.setTexture(CharTexture);
 		Char.setOrigin(25, 42);
-
+		timeToTarget = 5;
 		position.x = 500;
 		position.y = 500;
 		speed = 2;
@@ -113,4 +113,31 @@ void alien::wander(Player target)
 
 	position = position + velocity;
 	
+}
+
+void alien::arrive(Player target)
+{
+	velocity = target.position - position;
+
+	float temp;
+	temp = getMag(velocity);
+	if (temp < radius)
+	{
+		return;
+	}
+	else
+	{
+		velocity = velocity / timeToTarget;
+
+		float temp2 = getMag(velocity);
+		if (temp2 > maxSpeed)
+		{
+			velocity = velocity / temp2;
+			velocity = velocity * maxSpeed;
+			orientation = getOrientation();
+			orientation = orientation * 180 / 3.14;
+		}
+	}
+
+	position = position + velocity;
 }

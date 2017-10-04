@@ -16,6 +16,7 @@ public:
 	//void changeVelocity();
 	float getOrientation();
 	void wander(Player target);
+	void arrive(Player target);
 	void draw(sf::RenderWindow& window);
 	float getMag(sf::Vector2f velocity);
 
@@ -26,6 +27,8 @@ private:
 	int direction;
 	float rotation;
 	float maxSpeed = 2;
+	float timeToTarget;
+	float radius = 5;
 	int RIGHT = 1;
 	int LEFT = 2;
 	int UP = 3;
