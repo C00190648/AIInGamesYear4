@@ -30,7 +30,8 @@ private:
 	int LEFT = 2;
 	int UP = 3;
 	int DOWN = 4;
-	float maxRotation = 60;
+	float maxRotation = 90;
+	float wanderR;
 	sf::Vector2f position;
 	sf::Texture CharTexture;
 	sf::Vector2f velocity;
