@@ -10,7 +10,7 @@ Player::Player()
 
 	playerTexture.loadFromFile("player.png");
 	player.setTexture(playerTexture);
-
+	player.setOrigin(35, 25);
 	//player.setOrigin(player.getGlobalBounds().width / 2.0f, player.getGlobalBounds().height / 2.0f);
 
 	position.x = 600;

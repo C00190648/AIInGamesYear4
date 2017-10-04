@@ -14,7 +14,7 @@ public:
 	void move();
 	void seek(Player target);
 	//void changeVelocity();
-	float getOrientation(float orientation, sf::Vector2f velocity, Player target);
+	float getOrientation();
 	void wander(Player target);
 	void draw(sf::RenderWindow& window);
 	float getMag(sf::Vector2f velocity);
@@ -30,6 +30,7 @@ private:
 	int LEFT = 2;
 	int UP = 3;
 	int DOWN = 4;
+	float maxRotation = 60;
 	sf::Vector2f position;
 	sf::Texture CharTexture;
 	sf::Vector2f velocity;

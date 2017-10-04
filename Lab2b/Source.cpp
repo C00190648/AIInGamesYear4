@@ -44,7 +44,7 @@ int main()
 			player.move();
 
 			AI.seek(player);
-			AI.move();
+			//AI.move();
 			player.changeVelocity();
 			timeSinceLastUpdate = sf::Time::Zero;
 

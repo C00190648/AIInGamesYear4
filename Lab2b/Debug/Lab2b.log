@@ -1,4 +1,5 @@
-﻿  Alien.cpp
-c:\ai2\aiingamesyear4\lab2b\alien.cpp(70): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+﻿  Player.cpp
+c:\ai2\aiingamesyear4\lab2b\player.cpp(90): warning C4305: '-=': truncation from 'double' to 'float'
+c:\ai2\aiingamesyear4\lab2b\player.cpp(99): warning C4305: '+=': truncation from 'double' to 'float'
   Lab2b.vcxproj -> C:\AI2\AIInGamesYear4\Lab2b\Debug\Lab2b.exe
   Lab2b.vcxproj -> C:\AI2\AIInGamesYear4\Lab2b\Debug\Lab2b.pdb (Partial PDB)

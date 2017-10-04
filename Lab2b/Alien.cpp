@@ -1,4 +1,5 @@
 #include "Alien.h"
+#include <math.h>
 
 alien::alien(int type)
 {
@@ -10,12 +11,15 @@ alien::alien(int type)
 	{
 		CharTexture.loadFromFile("alien.png");
 		Char.setTexture(CharTexture);
+		Char.setOrigin(25, 42);
 
 		position.x = 500;
 		position.y = 500;
 		speed = 2;
+		//Char.setRotation(Char.getRotation());
 
-		rotation = Char.getRotation();
+		//rotation = Char.getRotation();
+		//orientation = getOrientation();
 	}
 }
 
@@ -56,6 +60,7 @@ void alien::move()
 void alien::draw(sf::RenderWindow& window)
 {
 	Char.setPosition(position.x, position.y);
+	Char.setRotation(orientation * 180 / 3.14);
 	window.draw(Char);
 }
 
@@ -66,23 +71,21 @@ void alien::seek(Player target)
 	float temp = getMag(velocity);
 	velocity = velocity / temp;
 	velocity = velocity * maxSpeed;
-	orientation = getOrientation(orientation, velocity, target);
-	orientation = (orientation * 180) / 3.14;
-	Char.setRotation(orientation);
+	position = position + velocity;
+	orientation = getOrientation();
+	
 }
 
 
 
-float alien::getOrientation(float orientation, sf::Vector2f velocity, Player target)
+float alien::getOrientation()
 {
-	float temp = getMag(velocity);
-	if (temp > 0)
+	if (sqrt((velocity.x * velocity.x) + (velocity.y * velocity.y)) > 0)
 	{
-		return atan2(-position.y ,position.x);
+		return atan2(-velocity.x ,velocity.y);
 	}
 	else
 	{
-		
 		return orientation;
 	}
 }
@@ -100,7 +103,7 @@ void alien::wander(Player target)
 	velocity = target.position - position;
 	temp = getMag(velocity);
 	velocity = velocity / temp;
-	orientation = getOrientation(orientation, velocity, target);
-	//orientation = orientation + MaxRotation * random(-1, +1);
-	//Velocity = (-sin(orientation), cos(orientation))*maxSpeed;
+	orientation = getOrientation();
+	orientation = orientation + maxRotation * (rand() % 5 + 1);
+	//velocity = ((-sin(orientation)*maxSpeed), (cos(orientation)*maxSpeed));
 }
