@@ -42,15 +42,16 @@ int main()
 		{
 
 			player.move();
-			AI.arrive(player);
-			//AI.seek(player);
-			//AI.wander(player);
-			//AI.move();
+			//AI.pursue(player.position,player.velocity);
+			//AI.arrive(player.position);
+			//AI.seek(player.position);
+			AI.wander(player.position);
+			AI.move();
 			player.changeVelocity();
 			timeSinceLastUpdate = sf::Time::Zero;
 
 		}
-		window.clear(sf::Color(0, 0, 0, 0));
+		window.clear();
 		AI.draw(window);
 		player.draw(window);
 		window.display();

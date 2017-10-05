@@ -12,11 +12,12 @@ public:
 	~alien();
 
 	void move();
-	void seek(Player target);
+	void seek(sf::Vector2f target);
 	//void changeVelocity();
 	float getOrientation();
-	void wander(Player target);
-	void arrive(Player target);
+	void wander(sf::Vector2f target);
+	void arrive(sf::Vector2f target);
+	void pursue(sf::Vector2f target, sf::Vector2f targetVelocity);
 	void draw(sf::RenderWindow& window);
 	float getMag(sf::Vector2f velocity);
 
@@ -24,22 +25,25 @@ private:
 
 	float speed;
 	bool pressed;
-	int direction;
 	float rotation;
-	float maxSpeed = 2;
+	float maxSpeed = 5;
 	float timeToTarget;
-	float radius = 5;
+	float radius = 70;
 	int RIGHT = 1;
 	int LEFT = 2;
 	int UP = 3;
 	int DOWN = 4;
-	float maxRotation = 90;
+	float maxRotation = 10;
+	int timer;
 	float wanderR;
 	sf::Vector2f position;
 	sf::Texture CharTexture;
 	sf::Vector2f velocity;
 	sf::Sprite Char;
+	sf::Vector2f direction;
 	float orientation;
+	float maxTimePrediction = 0.8;
+	float timePrediction = 0.8;
 
 };
 

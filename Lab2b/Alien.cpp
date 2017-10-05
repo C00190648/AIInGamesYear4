@@ -3,7 +3,6 @@
 
 alien::alien(int type)
 {
-	direction = rand() % 5 + 1;
 
 	//direction = 3;
 
@@ -12,10 +11,9 @@ alien::alien(int type)
 		CharTexture.loadFromFile("alien.png");
 		Char.setTexture(CharTexture);
 		Char.setOrigin(25, 42);
-		timeToTarget = 5;
+		timeToTarget = 10;
 		position.x = 500;
 		position.y = 500;
-		speed = 2;
 		//Char.setRotation(Char.getRotation());
 
 		//rotation = Char.getRotation();
@@ -29,9 +27,6 @@ alien::~alien()
 
 void alien::move()
 {
-
-	position = position + velocity;
-
 
 	if (position.x > 1000)
 	{
@@ -64,10 +59,10 @@ void alien::draw(sf::RenderWindow& window)
 	window.draw(Char);
 }
 
-void alien::seek(Player target)
+void alien::seek(sf::Vector2f target)
 {
 
-	velocity = target.position - position;
+	velocity = target - position;
 	float temp = getMag(velocity);
 	velocity = velocity / temp;
 	velocity = velocity * maxSpeed;
@@ -99,25 +94,34 @@ float alien::getMag(sf::Vector2f velocity)
 }
 
 
-void alien::wander(Player target)
-{
+void alien::wander(sf::Vector2f target)
+{	
+	seek(target);
+
+	float wanderAngle = orientation + maxRotation * (rand() % 1 - 1);
+
+
 	float temp;
-	velocity = target.position - position;
+	velocity = target - position;
 	temp = getMag(velocity);
 	velocity = velocity / temp;
 	orientation = getOrientation();
-	//orientation = orientation * 180 / 3.14;
+	orientation = orientation * 180 / 3.14;
+	orientation +=  maxRotation * (rand() % 3);
 
-	//orientation = (orientation + maxRotation) * (rand() % 3 - 1);
-	velocity = sf::Vector2f((-sin(orientation)), (cos(orientation))) * maxSpeed;
 
-	position = position + velocity;
+		//orientation += wanderAngle;
+
+	velocity = sf::Vector2f((sinf(orientation)), (cosf(orientation))) * maxSpeed;
+	timer = 0;
+
+
 	
 }
 
-void alien::arrive(Player target)
+void alien::arrive(sf::Vector2f target)
 {
-	velocity = target.position - position;
+	velocity = target - position;
 
 	float temp;
 	temp = getMag(velocity);
@@ -140,4 +144,24 @@ void alien::arrive(Player target)
 	}
 
 	position = position + velocity;
+}
+
+void alien::pursue(sf::Vector2f target,sf::Vector2f targetVelocity)
+{
+
+	float timePrediction;
+
+	velocity = target - position;
+	float distance = sqrt(velocity.x*velocity.x + velocity.y*velocity.y);
+	if (speed <= distance / maxTimePrediction) 
+	{
+		timePrediction = maxTimePrediction;
+	}
+	else 
+	{
+		timePrediction = distance / speed;
+	}
+	target = target + targetVelocity * timePrediction;
+	seek(target);
+
 }
