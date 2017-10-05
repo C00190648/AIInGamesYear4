@@ -8,9 +8,6 @@
 sf::RenderWindow window(sf::VideoMode(1000, 1000), "Lab1"); //pick a size
 
 
-
-
-
 int main()
 {
 	sf::Clock clock;
@@ -20,7 +17,12 @@ int main()
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
 	clock.restart();
 	sf::Event event;
-	alien AI(1);
+	alien wanderAI(1, 3);
+	alien seekAI(2, 6.5);
+	alien arriveAI1(3, 10);
+	alien arriveAI2(4, 7);
+	alien pursueAI(5, 4);
+	
 	Player player;
 
 	while (window.isOpen())
@@ -42,17 +44,29 @@ int main()
 		{
 
 			player.move();
-			//AI.pursue(player.position,player.velocity);
-			//AI.arrive(player.position);
-			//AI.seek(player.position);
-			AI.wander(player.position);
-			AI.move();
+			wanderAI.wander(player.position);
+			seekAI.seek(player.position);
+			arriveAI1.arrive(player.position);
+			arriveAI2.arrive(player.position);
+			pursueAI.pursue(player.position, player.velocity);
+
+			wanderAI.move();
+			seekAI.move();
+			arriveAI1.move();
+			arriveAI2.move();
+			pursueAI.move();
 			player.changeVelocity();
 			timeSinceLastUpdate = sf::Time::Zero;
 
 		}
 		window.clear();
-		AI.draw(window);
+
+		wanderAI.draw(window);
+		seekAI.draw(window);
+		arriveAI1.draw(window);
+		arriveAI2.draw(window);
+		pursueAI.draw(window);
+
 		player.draw(window);
 		window.display();
 	}
@@ -60,3 +74,4 @@ int main()
 	return 0;
 
 }
+
