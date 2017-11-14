@@ -18,6 +18,17 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Boid.h" />
+    <ClInclude Include="Flock.h" />
+    <ClInclude Include="Pvector.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Boid.cpp" />
+    <ClCompile Include="Flock.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Pvector.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{1E85A9B8-BBC8-487A-8280-B9CCEF8BECD7}</ProjectGuid>
@@ -118,9 +129,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="Source.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
