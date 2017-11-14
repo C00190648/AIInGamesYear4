@@ -256,3 +256,13 @@ void Boid::swarm(vector <Boid> v)
 	update();
 	borders();
 }
+
+Pvector Boid::Wander(sf::Vector2f target)
+{
+
+}
+
+Pvector Boid::Evade(sf::Vector2f target)
+{
+
+}
