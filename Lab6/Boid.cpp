@@ -275,14 +275,64 @@ void Boid::swarm(vector <Boid> v)
 	borders();
 }
 
-Pvector Boid::Wander(sf::Vector2f target)
+void Boid::Wander(Pvector v)
 {
-	Pvector temp;
-	return temp;
+	//this behavior is dependent on the update rate, so this line must
+	//be included when using time independent framerate.
+	double JitterThisTimeSlice = m_dWanderJitter * m_pVehicle->TimeElapsed();
+
+	//first, add a small random vector to the target's position
+	m_vWanderTarget += Vector2D(RandomClamped() * JitterThisTimeSlice,
+		RandomClamped() * JitterThisTimeSlice);
+
+	//reproject this new vector back on to a unit circle
+	m_vWanderTarget.Normalize();
+
+	//increase the length of the vector to the same as the radius
+	//of the wander circle
+	m_vWanderTarget *= m_dWanderRadius;
+
+	//move the target into a position WanderDist in front of the agent
+	Vector2D target = m_vWanderTarget + Vector2D(m_dWanderDistance, 0);
+
+	//project the target into world space
+	Vector2D Target = PointToWorldSpace(target,
+		m_pVehicle->Heading(),
+		m_pVehicle->Side(),
+		m_pVehicle->Pos());
+
+	//and steer towards it
+	return Target - m_pVehicle->Pos();
+
 }
 
-Pvector Boid::Evade(sf::Vector2f target)
+void Boid::Evade(Pvector v)
 {
-	Pvector temp;
-	return temp;
+	//Pvector desired;
+	//desired.subVector(v);  // A vector pointing from the location to the target
+	//					   // Normalize desired and scale to maximum speed
+	//desired.normalize();
+	//desired.mulScalar(maxSpeed);
+	//// Steering = Desired minus Velocity
+	//acceleration.subTwoVector(desired, velocity);
+	//acceleration.limit(maxForce);  // Limit to maximum steering force
+	//return acceleration;
+	/* Not necessary to include the check for facing direction this time */
+
+	Pvector ToPursuer = pursuer->Pos() - m_pVehicle->Pos();
+
+	//uncomment the following two lines to have Evade only consider pursuers 
+	//within a 'threat range'
+	const double ThreatRange = 100.0;
+	if (ToPursuer.LengthSq() > ThreatRange * ThreatRange) return Vector2D();
+
+	//the lookahead time is propotional to the distance between the pursuer
+	//and the pursuer; and is inversely proportional to the sum of the
+	//agents' velocities
+	double LookAheadTime = ToPursuer.Length() /
+		(m_pVehicle->MaxSpeed() + pursuer->Speed());
+
+	//now flee away from predicted future position of the pursuer
+	return Flee(pursuer->Pos() + pursuer->Velocity() * LookAheadTime);
+
 }
