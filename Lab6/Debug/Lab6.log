@@ -1,0 +1,13 @@
+﻿  Boid.cpp
+c:\a\aiingamesyear4\lab6\boid.h(42): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\a\aiingamesyear4\lab6\boid.h(53): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\a\aiingamesyear4\lab6\boid.h(57): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\a\aiingamesyear4\lab6\boid.cpp(45): warning C4018: '<': signed/unsigned mismatch
+c:\a\aiingamesyear4\lab6\boid.cpp(108): warning C4018: '<': signed/unsigned mismatch
+c:\a\aiingamesyear4\lab6\boid.cpp(147): warning C4018: '<': signed/unsigned mismatch
+c:\a\aiingamesyear4\lab6\boid.cpp(158): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\a\aiingamesyear4\lab6\boid.cpp(186): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\a\aiingamesyear4\lab6\boid.cpp(259): warning C4018: '<': signed/unsigned mismatch
+c:\a\aiingamesyear4\lab6\boid.cpp(272): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+  Lab6.vcxproj -> C:\A\AIInGamesYear4\Lab6\Debug\Lab6.exe
+  Lab6.vcxproj -> C:\A\AIInGamesYear4\Lab6\Debug\Lab6.pdb (Partial PDB)

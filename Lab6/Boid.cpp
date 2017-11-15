@@ -248,10 +248,28 @@ void Boid::swarm(vector <Boid> v)
 			force = force + R*U
 */
 	Pvector	R;
+	int A = 100;
+	int B = 5000;
+	int N = 1;
+	int M = 2;
+	int count = 0;
+	float totalForce = 0;
 	Pvector sum(0, 0);
 
-// Your code here..
+	for (int i = 0; i < v.size(); i++)
+	{
+		R = R.subTwoVector(location, v[i].location);
+		float D = R.magnitude();
+		if (D > 0)
+		{
+			float U = -A / pow(D, N) + B / pow(D, M);
+			R.normalize();
+			R.mulScalar(U);
+			sum.addVector(R);
+		}
 
+	}
+	sum.divScalar(v.size() - 1);
 	applyForce(sum);
 	update();
 	borders();
@@ -259,10 +277,12 @@ void Boid::swarm(vector <Boid> v)
 
 Pvector Boid::Wander(sf::Vector2f target)
 {
-
+	Pvector temp;
+	return temp;
 }
 
 Pvector Boid::Evade(sf::Vector2f target)
 {
-
+	Pvector temp;
+	return temp;
 }
