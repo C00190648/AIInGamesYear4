@@ -61,6 +61,7 @@ public:
 	void setMagnitude(float x);
 	float angleBetween(Pvector v);
 	void normalize();
+	void negative();
 
 	Pvector copy(Pvector v);	
 };

@@ -22,6 +22,7 @@
     <ClInclude Include="Boid.h" />
     <ClInclude Include="Flock.h" />
     <ClInclude Include="Pvector.h" />
+    <ClInclude Include="utils.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Boid.cpp" />

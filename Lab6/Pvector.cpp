@@ -27,6 +27,12 @@ void Pvector::addScalar(float s)
 	y += s;
 }
 
+void Pvector::negative()
+{
+	x = -x;
+	y = -y;
+}
+
 //Subtracts 2 vectors
 void Pvector::subVector(Pvector v)
 {

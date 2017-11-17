@@ -6,6 +6,7 @@
 #include <math.h>
 #include "SFML/Graphics.hpp"
 #include "Boid.h"
+#include "utils.h"
 
 // Global Variables for borders()
 // desktopTemp gets screen resolution of PC running the program
@@ -35,7 +36,74 @@ Pvector Boid::Separation(vector<Boid> boids)
 {
 	// If the boid we're looking at is a predator, do not run the separation
 	// algorithm
+
+	//if (predator == true)
+	//{
+	//	Pvector sum(0, 0);
+	//	return flee(sum);
+	//}
+
+
+
+		// Distance of field of vision for separation between boids
+		float desiredseparation = 20;
+
+		Pvector steer(0, 0);
+		int count = 0;
+		// For every boid in the system, check if it's too close
+		for (int i = 0; i < boids.size(); i++)
+		{
+			// Calculate distance from current boid to boid we're looking at
+			float d = location.distance(boids[i].location);
+			// If this is a fellow boid and it's too close, move away from it
+			if ((d > 0) && (d < desiredseparation))
+			{
+				Pvector diff(0, 0);
+				diff = diff.subTwoVector(location, boids[i].location);
+				diff.normalize();
+				diff.divScalar(d);      // Weight by distance
+				steer.addVector(diff);
+				count++;
+			}
+			// If current boid is a predator and the boid we're looking at is also
+			// a predator, then separate only slightly 
+			if ((d > 0) && (d < desiredseparation) && predator == true && boids[i].predator == true)
+			{
+				Pvector pred2pred(0, 0);
+				pred2pred = pred2pred.subTwoVector(location, boids[i].location);
+				pred2pred.normalize();
+				pred2pred.divScalar(d);
+				steer.addVector(pred2pred);
+				count++;
+			}
+			// If current boid is not a predator, but the boid we're looking at is
+			// a predator, then create a large separation Pvector
+			else if ((d > 0) && (d < desiredseparation + 70) && boids[i].predator == true)
+			{
+				Pvector pred(0, 0);
+				pred = pred.subTwoVector(location, boids[i].location);
+				pred.mulScalar(900);
+				steer.addVector(pred);
+				count++;
+			}
+		}
+		// Adds average difference of location to acceleration
+		if (count > 0)
+			steer.divScalar((float)count);
+		if (steer.magnitude() > 0)
+		{
+			// Steering = Desired - Velocity
+			steer.normalize();
+			steer.mulScalar(maxSpeed);
+			steer.subVector(velocity);
+			steer.limit(maxForce);
+		}
+		return steer;
 	
+}
+
+Pvector Boid::SeparationFromPredator(vector<Boid> boids)
+{
 	// Distance of field of vision for separation between boids
 	float desiredseparation = 20;
 
@@ -46,30 +114,8 @@ Pvector Boid::Separation(vector<Boid> boids)
 	{
 		// Calculate distance from current boid to boid we're looking at
 		float d = location.distance(boids[i].location);
-		// If this is a fellow boid and it's too close, move away from it
-		if ((d > 0) && (d < desiredseparation))
-		{
-			Pvector diff(0,0);
-			diff = diff.subTwoVector(location, boids[i].location); 
-			diff.normalize();
-			diff.divScalar(d);      // Weight by distance
-			steer.addVector(diff);
-			count++;
-		}
-		// If current boid is a predator and the boid we're looking at is also
-		// a predator, then separate only slightly 
-		if ((d > 0) && (d < desiredseparation) && predator == true && boids[i].predator == true)
-		{
-			Pvector pred2pred(0, 0);
-			pred2pred = pred2pred.subTwoVector(location, boids[i].location);
-			pred2pred.normalize();
-			pred2pred.divScalar(d);
-			steer.addVector(pred2pred);
-			count++;
-		} 
-		// If current boid is not a predator, but the boid we're looking at is
-		// a predator, then create a large separation Pvector
-		else if ((d > 0) && (d < desiredseparation+70) && boids[i].predator == true)
+	
+		 if ((d > 0) && (d < desiredseparation + 70) && boids[i].predator == true)
 		{
 			Pvector pred(0, 0);
 			pred = pred.subTwoVector(location, boids[i].location);
@@ -81,7 +127,7 @@ Pvector Boid::Separation(vector<Boid> boids)
 	// Adds average difference of location to acceleration
 	if (count > 0)
 		steer.divScalar((float)count);
-	if (steer.magnitude() > 0) 
+	if (steer.magnitude() > 0)
 	{
 		// Steering = Desired - Velocity
 		steer.normalize();
@@ -90,7 +136,9 @@ Pvector Boid::Separation(vector<Boid> boids)
 		steer.limit(maxForce);
 	}
 	return steer;
+
 }
+
 
 // Alignment calculates the average velocity in the field of view and 
 // manipulates the velocity of the Boid passed as parameter to adjust to that
@@ -99,36 +147,39 @@ Pvector Boid::Alignment(vector<Boid> Boids)
 {
 	// If the boid we're looking at is a predator, do not run the alignment
 	// algorithm
-	//if (predator == true)
-	//	return Pvector(0,0);
-	float neighbordist = 50;
 
-	Pvector sum(0, 0);	
-	int count = 0;
-	for (int i = 0; i < Boids.size(); i++)
-	{
-		float d = location.distance(Boids[i].location);
-		if ((d > 0) && (d < neighbordist)) // 0 < d < 50
+
+
+		float neighbordist = 50;
+
+		Pvector sum(0, 0);
+		int count = 0;
+		for (int i = 0; i < Boids.size(); i++)
 		{
-			sum.addVector(Boids[i].velocity);
-			count++;
+			float d = location.distance(Boids[i].location);
+			if ((d > 0) && (d < neighbordist)) // 0 < d < 50
+			{
+				sum.addVector(Boids[i].velocity);
+				count++;
+			}
 		}
-	}
-	// If there are boids close enough for alignment...
-	if (count > 0)
-	{
-		sum.divScalar((float)count);// Divide sum by the number of close boids (average of velocity)
-		sum.normalize();	   		// Turn sum into a unit vector, and
-		sum.mulScalar(maxSpeed);    // Multiply by maxSpeed
-		// Steer = Desired - Velocity
-		Pvector steer; 
-		steer = steer.subTwoVector(sum, velocity); //sum = desired(average)  
-		steer.limit(maxForce);
-		return steer;
-	} else {
-		Pvector temp(0, 0);
-		return temp;
-	}
+		// If there are boids close enough for alignment...
+		if (count > 0)
+		{
+			sum.divScalar((float)count);// Divide sum by the number of close boids (average of velocity)
+			sum.normalize();	   		// Turn sum into a unit vector, and
+			sum.mulScalar(maxSpeed);    // Multiply by maxSpeed
+			// Steer = Desired - Velocity
+			Pvector steer;
+			steer = steer.subTwoVector(sum, velocity); //sum = desired(average)  
+			steer.limit(maxForce);
+			return steer;
+		}
+		else {
+			Pvector temp(0, 0);
+			return temp;
+		}
+	
 }
 
 // Cohesion finds the average location of nearby boids and manipulates the 
@@ -137,30 +188,30 @@ Pvector Boid::Cohesion(vector<Boid> Boids)
 {
 	// If the boid we're looking at is a predator, do not run the cohesion
 	// algorithm
-	//if (predator == true)
-	//	return Pvector(0,0);
 
-	float neighbordist = 50;
+float neighbordist = 50;
 
-	Pvector sum(0, 0);	
-	int count = 0;
-	for (int i = 0; i < Boids.size(); i++)
-	{
-		float d = location.distance(Boids[i].location);
-		if ((d > 0) && (d < neighbordist))
+		Pvector sum(0, 0);
+		int count = 0;
+		for (int i = 0; i < Boids.size(); i++)
 		{
-			sum.addVector(Boids[i].location);
-			count++;
+			float d = location.distance(Boids[i].location);
+			if ((d > 0) && (d < neighbordist))
+			{
+				sum.addVector(Boids[i].location);
+				count++;
+			}
 		}
-	}
-	if (count > 0)
-	{
-		sum.divScalar(count);
-		return seek(sum);
-	} else {
-		Pvector temp(0,0);
-		return temp;
-	}
+		if (count > 0)
+		{
+			sum.divScalar(count);
+			return seek(sum);
+		}
+		else {
+			Pvector temp(0, 0);
+			return temp;
+		}
+	
 }
 
 // Seek function limits the maxSpeed, finds necessary steering force and
@@ -170,6 +221,21 @@ Pvector Boid::seek(Pvector v)
 	Pvector desired;
 	desired.subVector(v);  // A vector pointing from the location to the target
 	// Normalize desired and scale to maximum speed
+	desired.normalize();
+	desired.mulScalar(maxSpeed);
+	// Steering = Desired minus Velocity
+	acceleration.subTwoVector(desired, velocity);
+	acceleration.limit(maxForce);  // Limit to maximum steering force
+	return acceleration;
+
+}
+
+Pvector Boid::flee(Pvector v)
+{
+	Pvector desired;
+	location.subVector(v);
+	desired.subVector(location);  // A vector pointing from the location to the target
+						   // Normalize desired and scale to maximum speed
 	desired.normalize();
 	desired.mulScalar(maxSpeed);
 	// Steering = Desired minus Velocity
@@ -203,6 +269,11 @@ void Boid::run(vector <Boid> v)
 	borders();
 }
 
+void Boid::chase(vector<Boid>v)
+{
+
+}
+
 //Applies all three laws for the flock of boids and modifies to keep them from
 //breaking the laws.
 void Boid::flock(vector<Boid> v) 
@@ -218,15 +289,16 @@ void Boid::flock(vector<Boid> v)
 	applyForce(sep);
 	applyForce(ali);
 	applyForce(coh);
+
 }
 
 // Checks if boids go out of the window and if so, wraps them around to the other side.
 void Boid::borders()
 {
 	if (location.x < 0) location.x += w_width; 
-	if (location.y < 0) location.y += w_height;
+	if (location.y < 440) location.y += w_height;
 	if (location.x > 1000) location.x -= w_width;
-	if (location.y > 1000) location.y -= w_height;
+	if (location.y > 1000) location.y -= 440;
 }
 
 // Calculates the angle for the velocity of a boid which allows the visual 
@@ -240,99 +312,114 @@ float Boid::angle(Pvector v)
 
 void Boid::swarm(vector <Boid> v)
 {
-/*		Lenard-Jones Potential function
-			Vector R = me.position - you.position
-			Real D = R.magnitude()
-			Real U = -A / pow(D, N) + B / pow(D, M)
-			R.normalise()
-			force = force + R*U
-*/
-	Pvector	R;
-	int A = 100;
-	int B = 5000;
-	int N = 1;
-	int M = 2;
-	int count = 0;
-	float totalForce = 0;
-	Pvector sum(0, 0);
+	/*if (!predator)
+	{*/
+		Pvector	R;
+		int A = 100;
+		int B = 5000;
+		int N = 1;
+		int M = 2;
+		int count = 0;
+		float totalForce = 0;
+		Pvector sum(0, 0);
 
-	for (int i = 0; i < v.size(); i++)
-	{
-		R = R.subTwoVector(location, v[i].location);
-		float D = R.magnitude();
-		if (D > 0)
+		for (int i = 0; i < v.size(); i++)
 		{
-			float U = -A / pow(D, N) + B / pow(D, M);
-			R.normalize();
-			R.mulScalar(U);
-			sum.addVector(R);
+			R = R.subTwoVector(location, v[i].location);
+			float D = R.magnitude();
+			if (D > 0)
+			{
+				float U = -A / pow(D, N) + B / pow(D, M);
+				R.normalize();
+				R.mulScalar(U);
+				sum.addVector(R);
+			}
+
 		}
 
-	}
-	sum.divScalar(v.size() - 1);
-	applyForce(sum);
-	update();
-	borders();
+		//Pvector sep = SeparationFromPredator(v);
+		//sep.mulScalar(1.5);
+		//applyForce(sep);
+		sum.divScalar(v.size() - 1);
+		applyForce(sum);
+		update();
+		borders();
+	//}
+
+	//else
+	//{
+	//	Pvector sep = Separation(v);
+	//	Pvector ali = Alignment(v);
+	//	Pvector coh = Cohesion(v);
+	//	// Arbitrarily weight these forces
+	//	sep.mulScalar(0);
+	//	ali.mulScalar(50); // Might need to alter weights for different characteristics
+	//	coh.mulScalar(50);
+	//	// Add the force vectors to acceleration
+	//	applyForce(sep);
+	//	applyForce(ali);
+	//	applyForce(coh);
+	//	update();
+	//	borders();
+	//}
 }
 
-void Boid::Wander(Pvector v)
+
+
+Pvector Boid::Wander(vector <Boid> v)
 {
+	
+
 	//this behavior is dependent on the update rate, so this line must
 	//be included when using time independent framerate.
-	double JitterThisTimeSlice = m_dWanderJitter * m_pVehicle->TimeElapsed();
+	double JitterThisTimeSlice = m_dWanderJitter * 60;
 
-	//first, add a small random vector to the target's position
-	m_vWanderTarget += Vector2D(RandomClamped() * JitterThisTimeSlice,
-		RandomClamped() * JitterThisTimeSlice);
+	////first, add a small random vector to the target's position
+	m_vWanderTarget.addVector(Pvector(RandomClamped() * JitterThisTimeSlice,
+		RandomClamped() * JitterThisTimeSlice));
 
 	//reproject this new vector back on to a unit circle
-	m_vWanderTarget.Normalize();
+	m_vWanderTarget.normalize();
 
 	//increase the length of the vector to the same as the radius
 	//of the wander circle
-	m_vWanderTarget *= m_dWanderRadius;
+	m_vWanderTarget.mulScalar(m_dWanderRadius);
 
-	//move the target into a position WanderDist in front of the agent
-	Vector2D target = m_vWanderTarget + Vector2D(m_dWanderDistance, 0);
+	////move the target into a position WanderDist in front of the agent
+	Pvector target;
+	m_vWanderTarget.addVector(Pvector(m_dWanderDistance, 0));
+	target = m_vWanderTarget;
+	////project the target into world space
+	//Vector2D Target = PointToWorldSpace(target,
+	//	m_pVehicle->Heading(),
+	//	m_pVehicle->Side(),
+	//	m_pVehicle->Pos());
+	////and steer towards it
+	return target;
 
-	//project the target into world space
-	Vector2D Target = PointToWorldSpace(target,
-		m_pVehicle->Heading(),
-		m_pVehicle->Side(),
-		m_pVehicle->Pos());
-
-	//and steer towards it
-	return Target - m_pVehicle->Pos();
 
 }
 
-void Boid::Evade(Pvector v)
+void Boid::Evade(Boid v)
 {
-	//Pvector desired;
-	//desired.subVector(v);  // A vector pointing from the location to the target
-	//					   // Normalize desired and scale to maximum speed
-	//desired.normalize();
-	//desired.mulScalar(maxSpeed);
-	//// Steering = Desired minus Velocity
-	//acceleration.subTwoVector(desired, velocity);
-	//acceleration.limit(maxForce);  // Limit to maximum steering force
-	//return acceleration;
-	/* Not necessary to include the check for facing direction this time */
-
-	Pvector ToPursuer = pursuer->Pos() - m_pVehicle->Pos();
-
-	//uncomment the following two lines to have Evade only consider pursuers 
-	//within a 'threat range'
-	const double ThreatRange = 100.0;
-	if (ToPursuer.LengthSq() > ThreatRange * ThreatRange) return Vector2D();
-
-	//the lookahead time is propotional to the distance between the pursuer
-	//and the pursuer; and is inversely proportional to the sum of the
-	//agents' velocities
-	double LookAheadTime = ToPursuer.Length() /
-		(m_pVehicle->MaxSpeed() + pursuer->Speed());
-
-	//now flee away from predicted future position of the pursuer
-	return Flee(pursuer->Pos() + pursuer->Velocity() * LookAheadTime);
+	float timePrediction;
+	
+	Pvector futurePosition;
+	v.location.subVector(location);
+	velocity = v.location;
+	float distance = sqrt(velocity.x*velocity.x + velocity.y*velocity.y);
+	if (maxSpeed <= distance / maxTimePrediction)
+	{
+		timePrediction = maxTimePrediction;
+	}
+	else
+	{
+		timePrediction = distance / maxSpeed;
+	}
+	v.velocity.mulScalar(timePrediction);
+	v.location.subVector(v.velocity);
+	futurePosition = v.location;
+	flee(futurePosition);
 
 }
+

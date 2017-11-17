@@ -40,6 +40,7 @@ errors.
 	void addBoid(Boid b);
 	void flocking();
 	void swarming();
+	void removeBoid(float i);
 
 };
 

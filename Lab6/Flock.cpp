@@ -22,6 +22,11 @@ void Flock::addBoid(Boid b)
 	flock.push_back(b);
 }
 
+void Flock::removeBoid(float i)
+{
+	flock.erase(flock.begin() + i);
+}
+
 // Runs the run function for every boid in the flock checking against the flock
 // itself. Which in turn applies all the rules to the flock.
 void Flock::flocking() 
@@ -35,8 +40,10 @@ void Flock::flocking()
 // itself. Which in turn applies all the rules to the flock.
 void Flock::swarming()
 {
+	//flock[0].run(flock);
 	for (int i = 0; i < flock.size(); i++)
 	{
 		flock[i].swarm(flock);
 	}
+
 }

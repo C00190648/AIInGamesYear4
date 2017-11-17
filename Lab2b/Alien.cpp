@@ -199,7 +199,7 @@ void alien::pursue(sf::Vector2f target,sf::Vector2f targetVelocity)
 {
 
 	float timePrediction;
-
+	sf::Vector2f futurePosition;
 	velocity = target - position;
 	float distance = sqrt(velocity.x*velocity.x + velocity.y*velocity.y);
 	if (speed <= distance / maxTimePrediction) 
@@ -210,8 +210,8 @@ void alien::pursue(sf::Vector2f target,sf::Vector2f targetVelocity)
 	{
 		timePrediction = distance / speed;
 	}
-	target = target + targetVelocity * timePrediction;
-	seek(target);
+	futurePosition = target + targetVelocity * timePrediction;
+	seek(futurePosition);
 
 }
 
